@@ -23,6 +23,10 @@ public:
 
 	QTreeLeafNode(string dir)
 	{
+		nw = NULL;
+		ne = NULL;
+		sw = NULL;
+		se = NULL;
 		x = 0;
 		y = 0;
 		cityName = "";
@@ -31,6 +35,10 @@ public:
 	}
 	QTreeLeafNode(int x_coordinate, int y_coordinate, string name, string dir)
 	{
+		nw = NULL;
+		ne = NULL;
+		sw = NULL;
+		se = NULL;
 		x = x_coordinate;
 		y = y_coordinate;
 		cityName = name;

@@ -17,11 +17,13 @@ public:
 	QRTree();
 	bool isEmpty();
 	void insert(int x_coordinate, int y_coordinate, string name);
-	void debug();
+	void search(int x_coordinate, int y_coordinate, int radius);
 	void remove(int x_coordinate, int y_coordinate);
 	void findNode(int x_coordinate, int y_coordinate);
+	void debug();
+	void visitNode(QTNode* Node);
 	//QTreeLeafNode* search(int x_coordinate, int y_coordinate);
-	void visitNode(QTNode* node);
+	void output(QTNode* node, int x_coordinate, int y_coordinate, int radius);
 	bool internalIsEmpty(QTreeInternalNode* node);
 	void decompose(QTreeLeafNode* node, int x_coordinate, int y_coordinate, string direction);
 	bool decomposeFinish(QTreeInternalNode* node, QTreeLeafNode* targetNode, int x_coordinate, int y_coordinate);
@@ -34,6 +36,7 @@ private:
 	void remove(QTreeInternalNode* root, int x_coordinate, int y_coordinate);
 	QTreeLeafNode* findNode(QTNode* node, int x_coordinate, int y_coordinate);
 	string location(QTreeInternalNode* node, int x_coordinate, int y_coordinate);
+	void search(QTNode* node, int x_coordinate, int y_coordinate, int radius);
 	void debug(QTNode* node);
 };
 

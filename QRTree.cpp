@@ -34,21 +34,20 @@ string QRTree::location(QTreeInternalNode* node, int x_coordinate, int y_coordin
 	int Yup = node->yMin;
 	int Ydown = node->yMax;
 	int Ymiddle = node->yMin + Ylength/2;
-	cout<<"Xlength: "<<Xlength<<endl;
-	cout<<"Ylength: "<<Ylength<<endl;
-	cout<<"Xleft: "<<Xleft<<endl;
-	cout<<"Xright: "<<Xright<<endl;
-	cout<<"Xmiddle: "<<Xmiddle<<endl;
-	cout<<"Yup: "<<Yup<<endl;
-	cout<<"Ydown: "<<Ydown<<endl;
-	cout<<"Ymiddle: "<<Ymiddle<<endl;
-	cout<<x_coordinate<<endl;
-	cout<<y_coordinate<<endl;
+	//cout<<"Xlength: "<<Xlength<<endl;
+	//cout<<"Ylength: "<<Ylength<<endl;
+	//cout<<"Xleft: "<<Xleft<<endl;
+	//cout<<"Xright: "<<Xright<<endl;
+	//cout<<"Xmiddle: "<<Xmiddle<<endl;
+	//cout<<"Yup: "<<Yup<<endl;
+	//cout<<"Ydown: "<<Ydown<<endl;
+	//cout<<"Ymiddle: "<<Ymiddle<<endl;
+	//cout<<x_coordinate<<endl;
+	//cout<<y_coordinate<<endl;
 
 	//nw
 	if ((Xleft < x_coordinate) && (x_coordinate < Xmiddle) && (Yup < y_coordinate) && (y_coordinate < Ymiddle))
 	{
-		cout<<"here"<<endl;
 			location = "nw";
 			return location;
 	}
@@ -56,7 +55,6 @@ string QRTree::location(QTreeInternalNode* node, int x_coordinate, int y_coordin
 	//ne
 	if ((Xmiddle < x_coordinate) && (x_coordinate < Xright) && (Yup < y_coordinate) &&(y_coordinate < Ymiddle))
 	{
-		cout<<"there"<<endl;
 			location = "ne";
 			return location;
 	}
@@ -79,13 +77,11 @@ string QRTree::location(QTreeInternalNode* node, int x_coordinate, int y_coordin
 void QRTree::insert(int x_coordinate, int y_coordinate, string name)
 	{
 		string dir = location(internalRoot, x_coordinate, y_coordinate);
-		cout<<"insert()the node is going to: "<<dir<<x_coordinate<<" : "<<y_coordinate<<endl;
 		if(isEmpty() == true)
 		{
 			if(dir == "nw")
 			{
 				internalRoot->nw = new QTreeLeafNode(x_coordinate, y_coordinate, name, "nw");
-				cout<<"internal: "<<internalRoot->nw->internal<<endl;
 			}
 			if(dir == "ne")
 			{
@@ -110,7 +106,6 @@ void QRTree::insert(QTNode* node, int x_coordinate, int y_coordinate , string na
 	{
 		QTreeInternalNode* temp = dynamic_cast<QTreeInternalNode*>(node);
 		string dir = location(temp, x_coordinate, y_coordinate);
-		cout<<"insert(node)the node is going to: "<<dir<<endl;
 		//nw
 		if(dir == "nw")
 		{
@@ -119,7 +114,7 @@ void QRTree::insert(QTNode* node, int x_coordinate, int y_coordinate , string na
 			else if(temp->nw->internal == true)
 			{	
 				QTreeInternalNode* te = dynamic_cast<QTreeInternalNode*>(temp);
-				insert(te->nw, x_coordinate, y_coordinate, "nw");
+				insert(te->nw, x_coordinate, y_coordinate, name);
 			}
 			else
 			{
@@ -151,7 +146,7 @@ void QRTree::insert(QTNode* node, int x_coordinate, int y_coordinate , string na
 			else if(temp->ne->internal == true)
 			{	
 				QTreeInternalNode* te =dynamic_cast<QTreeInternalNode*>(temp);
-				insert(te->ne, x_coordinate, y_coordinate, "ne");
+				insert(te->ne, x_coordinate, y_coordinate, name);
 			}
 			else
 			{
@@ -183,7 +178,7 @@ void QRTree::insert(QTNode* node, int x_coordinate, int y_coordinate , string na
 			else if(temp->sw->internal == true)
 			{	
 				QTreeInternalNode* te =dynamic_cast<QTreeInternalNode*>(temp);
-				insert(te->sw, x_coordinate, y_coordinate, "sw");
+				insert(te->sw, x_coordinate, y_coordinate, name);
 			}
 			else
 			{
@@ -216,7 +211,7 @@ void QRTree::insert(QTNode* node, int x_coordinate, int y_coordinate , string na
 			else if(temp->se->internal == true)
 			{	
 				QTreeInternalNode* te =dynamic_cast<QTreeInternalNode*>(temp);
-				insert(te->se, x_coordinate, y_coordinate, "se");
+				insert(te->se, x_coordinate, y_coordinate, name);
 			}
 			else
 			{
@@ -243,6 +238,42 @@ void QRTree::insert(QTNode* node, int x_coordinate, int y_coordinate , string na
 	}
 }
 
+void QRTree::search(int x_coordinate, int y_coordinate, int radius)
+{
+	search(internalRoot, x_coordinate, y_coordinate, radius);
+}
+
+void QRTree::search(QTNode* node, int x_coordinate, int y_coordinate, int radius)
+{
+	if (node == NULL)
+	{
+		//cout<<"node = NULL";
+		return;
+	}
+	output(node, x_coordinate, y_coordinate, radius);
+	search(node->nw, x_coordinate, y_coordinate, radius); 
+	search(node->ne, x_coordinate, y_coordinate, radius);
+	search(node->sw, x_coordinate, y_coordinate, radius);
+	search(node->se, x_coordinate, y_coordinate, radius);
+}
+
+void QRTree::output(QTNode* node, int x_coordinate, int y_coordinate, int radius)
+{
+	if (node == NULL)
+	{
+		
+	}
+	else if(node->internal == true)
+	{
+
+	}		
+	else
+	{
+		if ((((node->x - x_coordinate) * (node->x - x_coordinate)) + ((node->y - y_coordinate) * (node->y - y_coordinate))) <= radius * radius)
+			cout<<node->x<<" , "<<node->y<<" "<<node->cityName<<endl;
+	}
+}
+
 void QRTree::debug()
 {
 	debug(internalRoot);
@@ -251,38 +282,45 @@ void QRTree::debug()
 void QRTree::debug(QTNode* node)
 {
 	if (node == NULL)
+    {
+		cout<<"E";
+        return;
+    }
+	visitNode(node);
+	if (node->internal == true)
 	{
-		cout<<"node = NULL";
+		debug(node->nw);
+		debug(node->ne);
+		debug(node->sw);
+		debug(node->se);
+	}
+	else
+	{
 		return;
 	}
-	visitNode(node);
-	debug(node->nw); 
-	debug(node->ne);
-	debug(node->sw);
-	debug(node->se);
+
 }
 
 void QRTree::visitNode(QTNode* node)
 {
-	if (node == NULL)
-	{
+    if (node == NULL)
+    {
 		cout<<"E";
-	}
-	//cout<<node->directionInParent<<endl;
-	else
-	{
-
+    }
+    //cout<<node->directionInParent<<endl;
+    else
+    {
 		if(node->internal == true)
 			cout<<"I";
 		if(node->internal == false)
-		{
+        {
 			if (node == NULL)
 			{
 				cout<<"E";
 			}
 			else
 			{
-				cout<<"direction: "<<node->directionInParent<<" "<<node->x<<","<<node->y<<node->cityName<<"|";
+				cout<<node->x<<","<<node->y<<node->cityName<<"|";
 			}
 		}
 	}
