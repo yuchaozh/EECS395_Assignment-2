@@ -214,7 +214,7 @@ void BSTree:: findNode(string name, BSTNode* node)
 {
 	if (node == NULL)
 	{
-		cout<<"Can not find node: "<<name<<endl;
+		cout<<"Can not find node: "<<endl;
 	}
 	else if((name == node->cityName)) // not present, or present here 
     {
@@ -230,7 +230,7 @@ void BSTree:: findNode(string name, BSTNode* node)
 		return findNode(name, node->right);
     }
 }
-
+//
 //int main()
 //{
 //	BSTree tree;
