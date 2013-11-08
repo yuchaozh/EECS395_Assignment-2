@@ -32,6 +32,8 @@ public:
 		cityName = "";
 		directionInParent = dir;
 		internal = false;
+		children = 0;
+		parent = NULL;
 	}
 	QTreeLeafNode(int x_coordinate, int y_coordinate, string name, string dir)
 	{
@@ -44,6 +46,8 @@ public:
 		cityName = name;
 		directionInParent = dir;
 		internal = false;
+		children = 0;
+		parent = NULL;
 	}
 };
 #endif

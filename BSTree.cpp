@@ -34,6 +34,11 @@ BSTree::BSTree()
 	root = NULL;
 }
 
+void BSTree::makenull()
+{
+	BSTree();
+}
+
 //delete all nodes in the tree
 void BSTree::destroyTree(BSTNode* node)
 {
@@ -63,7 +68,6 @@ void BSTree::insert(BSTNode* node, int x_coordinate, int y_coordinate, string na
 	if (node == NULL)
 	{
 		node = new BSTNode(x_coordinate, y_coordinate, name);
-		//cout<<node->cityName<<" "<<node->x<<" "<<node->y<<" "<<node->left<<" "<<node->right<<" "<<node->down<<endl;
 		return;
 	}
 	// if the name is smaller, then store into the left subtree
@@ -71,7 +75,6 @@ void BSTree::insert(BSTNode* node, int x_coordinate, int y_coordinate, string na
 	{
 		if (node->left!= NULL)
 		{
-			//insert(node->left, x_coordinate, y_coordinate, name);
 			insert(node->left, x_coordinate, y_coordinate, name);
 		}
 		else
@@ -135,8 +138,6 @@ void BSTree::remove(string name, BSTNode* &node)
 		node-> x = (findMin(node->right)->x);
 		node->y = (findMin(node->right)->y);
 		node->down = (findMin(node->right)->down);
-		//node->left = (findMin(node->right)->left);
-		//node->right = (findMin(node->right)->right);
 		remove(node->cityName, node->right);
 	}
 	else
@@ -183,42 +184,37 @@ void BSTree::preOrderTraverse(BSTNode* node)
 
 void BSTree::visitNode(BSTNode* node)
 {
-	cout<<"name: "<<node->cityName<<endl;
-	cout<<"left: "<<node->left<<endl;
-	cout<<"right: "<<node->right<<endl;
 	if (node->down!=NULL)
 	{
-		cout<<"has countries with same name: "<<endl;
 		while (node->down!= NULL)
 		{
-			cout<<"cityName: "<<node->cityName<<"  X_Coordinate: "<<node->x<<"  Y_Coordinate:"<<node->y
-			<<"  otherCity:"<<node->down<<endl;
+			cout<<"cityName: "<<node->cityName<<"  X_Coordinate: "<<node->x<<"  Y_Coordinate:"<<node->y<<endl;
 			node = node->down;
 		}
-		cout<<"cityName: "<<node->cityName<<"  X_Coordinate: "<<node->x<<"  Y_Coordinate:"<<node->y
-			<<"  otherCity:"<<node->down<<endl;
+		cout<<"cityName: "<<node->cityName<<"  X_Coordinate: "<<node->x<<"  Y_Coordinate:"<<node->y<<endl;
 	}
 	else
 	{
-		cout<<"cityName: "<<node->cityName<<"  X_Coordinate: "<<node->x<<"  Y_Coordinate:"<<node->y
-			<<"  otherCity:"<<node->down<<endl;
+		cout<<"cityName: "<<node->cityName<<"  X_Coordinate: "<<node->x<<"  Y_Coordinate:"<<node->y<<endl;
 	}
 }
 
-void BSTree::findNode(string name)
+BSTNode* BSTree::findNode(string name)
 {
 	return findNode(name, root);
 }
 
-void BSTree:: findNode(string name, BSTNode* node)
+BSTNode* BSTree:: findNode(string name, BSTNode* node)
 {
 	if (node == NULL)
 	{
 		cout<<"Can not find node: "<<endl;
+		return NULL;
 	}
 	else if((name == node->cityName)) // not present, or present here 
     {
 		visitNode(node);
+		return node;
     }
     // otherwise look in left / right subtree as appropriate 
 	else if(name < node->cityName)
@@ -230,21 +226,3 @@ void BSTree:: findNode(string name, BSTNode* node)
 		return findNode(name, node->right);
     }
 }
-//
-//int main()
-//{
-//	BSTree tree;
-//	tree.insert(500, 140, "skokie");
-//	tree.insert(501, 140, "skokie");
-//	tree.insert(1,1, "bbb");
-//	tree.insert(401, 500, "evanston");
-//	tree.insert(402, 500, "evanston");
-//	tree.insert(403, 500, "evanston");
-//	tree.insert(100, 500, "aaa");
-//	tree.insert(320, 888, "zzzz");
-//	tree.preOrderTraverse();
-//	tree.remove("aaa");
-//	//tree.preOrderTraverse();
-//	tree.findNode("asd");
-//	system("pause");
-//}

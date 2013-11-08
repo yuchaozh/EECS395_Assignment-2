@@ -20,7 +20,9 @@ public:
 	QTNode* ne;
 	QTNode* sw;
 	QTNode* se;
+	QTNode* parent;
 	bool internal;
+	int children;
 
 	virtual ~QTNode()
 	{

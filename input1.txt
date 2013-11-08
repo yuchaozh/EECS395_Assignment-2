@@ -1,0 +1,32 @@
+
+makenull
+    debug
+
+insert 123 1597 Chicago
+insert 123 1597 Chicago
+insert 16384 4 Chicago
+insert 5001 5012 Chicago
+insert 5001 5012 Evanston
+insert 5001 6213 Chicago        
+insert 5001 8414    Evanston       
+insert 0 0 Skokie
+
+insert 16383 16383      New_York 
+
+debug        
+
+find Chicago
+find    Chicago   
+
+
+search   5001 5012 10000
+
+remove aaa
+
+find Chicago
+
+remove 123 1597
+
+search 123 1597 0
+
+
