@@ -80,13 +80,19 @@ void dealing(vector<string> command)
 			}
 			else
 			{
-				while(node->down!=NULL)
+				if (node->down == NULL)
 				{
-					cout<<"remove: "<<node->cityName<<"("<<node->x<<", "<<node->y<<")"<<endl;
-					qrtree.remove(node->x, node->y);
-					node = node->down; 
 				}
-				bstree.remove(name);
+				else
+				{
+					while(node->down!=NULL)
+					{
+						cout<<"remove: "<<node->cityName<<"("<<node->x<<", "<<node->y<<")"<<endl;
+						qrtree.remove(node->x, node->y);
+						node = node->down; 
+					}
+					bstree.remove(name);
+				}
 			}
 		}
 
@@ -97,6 +103,7 @@ void dealing(vector<string> command)
 			int x = atoi(command[1].c_str());
 			int y = atoi(command[2].c_str());
 			node = qrtree.findNode(x, y);
+			//qrtree.findNode(x, y);
 			if (node == NULL)
 			{
 				cout<<"cannot find the node.(remove x, y in qrtree)"<<endl;
@@ -104,22 +111,23 @@ void dealing(vector<string> command)
 			else
 			{
 				cout<<"remove: (in qrtree) "<<node->cityName<<"("<<node->x<<";"<<node->y<<")"<<endl;
-				qrtree.remove(node->x, node->y);
+				qrtree.remove(x, y);
+				bstree.remove(node->cityName);
 			}
 		}
 
 	}
 }
 
-//int main(int argc, char *argv[])
-int main()
+int main(int argc, char *argv[])
+//int main()
 {
 	string input;
 	vector<string> commandLine;
 	ifstream commandfile;
-    //commandfile.open(argv[1]);
+    commandfile.open(argv[1]);
 	//commandfile.open("PRQuadtree_Input.txt");
-	commandfile.open("input1.txt");
+	//commandfile.open("input1.txt");
 	while (getline(commandfile, input))
     {
 		istringstream istr(input);
@@ -132,6 +140,6 @@ int main()
 		dealing(commandLine);
 		commandLine.clear();
 	}
-	//system("pause");
+	system("pause");
 }
 
